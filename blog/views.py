@@ -34,10 +34,9 @@ def Article_Detail(request, slug):
 
 @api_view(['GET'])
 def Featured_Articles(request):
-    featured_articles = Articles.objects.all().order_by('-id')[:10]
+    featured_articles = Articles.objects.filter(is_featured=True).order_by('-id')[:10]
     serializer = [ArticleSerializer(article).data for article in featured_articles]
     return Response(serializer)  
-
 
 @api_view(["GET"])
 def Popular_Articles(request):
