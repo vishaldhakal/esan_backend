@@ -7,6 +7,7 @@ class UserProfile(models.Model):
     is_organization = models.BooleanField(default=False)
     is_organizer = models.BooleanField(default=False)
     is_blog_writer = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.user.first_name

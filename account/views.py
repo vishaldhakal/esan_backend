@@ -33,6 +33,7 @@ def CreateUserProfile(request):
     is_organization = request.POST.get('is_organization',False) == True
     is_organizer = request.POST.get('is_organizer',False) == True
     is_blog_writer = request.POST.get('is_blog_writer',False) == True
+    is_admin = request.POST.get('is_admin', False) == True
 
     # Create a new User object
     user = User.objects.create_user(username=email, email=email, password=password, first_name=first_name, last_name=last_name)
