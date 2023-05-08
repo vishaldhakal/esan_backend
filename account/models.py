@@ -20,6 +20,7 @@ class UserProfile(AbstractUser):
     avatar = models.ImageField(blank=True)
     status = models.CharField(max_length=15, choices=status_choices,default="Active")
     is_verified = models.BooleanField(default=False)
+    password_reset_token = models.CharField(max_length=255, blank=True)
 
     def __str__(self) -> str:
         return self.username

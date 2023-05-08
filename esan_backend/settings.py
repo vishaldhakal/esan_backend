@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'account',
     'tournament',
     'corsheaders',
+    'faq'
 ]
 
 MIDDLEWARE = [
@@ -74,24 +75,24 @@ WSGI_APPLICATION = 'esan_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-} """ 
+} 
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "esan",
-        "USER": "vishal",
-        "PASSWORD": "DatabaseUserPassword",
-        "HOST": "localhost",
-        "PORT": "",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "esan",
+#         "USER": "vishal",
+#         "PASSWORD": "DatabaseUserPassword",
+#         "HOST": "localhost",
+#         "PORT": "",
+#     }
+# }
 
 
 # Password validation
@@ -117,6 +118,18 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_PORT = 587  
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'hreedhann9@gmail.com'  
+EMAIL_HOST_PASSWORD = 'kathmandu1#'  
+
+FRONTEND_URL = 'https://dev-esan-fe.vercel.app/'
+DEFAULT_FROM_EMAIL = 'gautammanish700@gmail.com'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
