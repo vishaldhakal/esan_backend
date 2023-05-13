@@ -1,31 +1,39 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from faq.models import FAQ
 from faq.serializers import FAQSerializer
-from rest_framework import status
 
 # Create your views here.
 
 @api_view(["POST"])
 def Create_FAQ(request):
-    serializer = FAQSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    heading = request.POST['heading']
+    detail = request.POST['detail']
+    value =request.POST['value']
+
+    faq = FAQ(
+        heading = heading,
+        detail = detail,
+        value = value
+    )
+    faq.save()
+    return Response({"FAQ created successfully"})
 
 @api_view(["PUT"])
-def Update_FAQ(request, pk):
-    try:
-        faq = FAQ.objects.get(pk=pk)
-    except FAQ.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    serializer = FAQSerializer(faq, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def Update_FAQ(request, id):
+    faq = FAQ.objects.get(id=id )
+    heading = request.POST.get('heading')
+    detail = request.POST.get('detail')
+    value =request.POST.get('value')
+
+    faq.heading = heading
+    faq.detail = detail
+    faq.value = value
+
+    faq.save()
+    return Response({"FAQ Updated Successfully"})
+
 
 @api_view(["GET"])
 def FAQList(request):
@@ -37,13 +45,9 @@ def FAQList(request):
 
 
 @api_view(["DELETE"])
-def delete_faq(request, pk):
-    try:
-        faq = FAQ.objects.get(pk=pk)
-    except FAQ.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    
+def delete_faq(request, id):
+    faq = FAQ.objects.get(id=id )
     faq.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response({"FAQ Deleted Successfully"})
 
 

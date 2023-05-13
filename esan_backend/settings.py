@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'tournament',
     'corsheaders',
     'faq',
-    'testimonial'
+    'testimonial',
+    'our_team',
 ]
 
 MIDDLEWARE = [

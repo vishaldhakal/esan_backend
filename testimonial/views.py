@@ -11,12 +11,17 @@ from .serializers import TestimonialSerializer
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def submit_testimonial(request):
-    serializer = TestimonialSerializer(data=request.data)
-    if serializer.is_valid():
-        testimonial = serializer.save(user=request.user)
-        return Response({"testimonial_id": testimonial.id}, status=status.HTTP_201_CREATED)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    user = request.POST['user']
+    description = request.POST['description']
+    rating =request.POST['rating']
+
+    testimonial = Testimonial(
+        user = user,
+        description = description,
+        rating = rating
+    )
+    testimonial.save()
+    return Response({"Testimonial created successfully"})
     
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
@@ -27,20 +32,26 @@ def get_testimonials(request):
 
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
-def get_testimonial(request, pk):
-    testimonial = Testimonial.objects.get(pk=pk)
+def get_testimonial(request, id):
+    testimonial = Testimonial.objects.get(id=id)
     serializer = TestimonialSerializer(testimonial)
     return Response(serializer.data)
 
 @permission_classes([IsAuthenticated])
 @api_view(['PUT'])
-def edit_testimonial(request, pk):
-    testimonial = Testimonial.objects.get(pk=pk)
-    serializer = TestimonialSerializer(testimonial, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def edit_testimonial(request, id):
+    testimonial = Testimonial.objects.get(id=id)
+    user = request.POST.get('user')
+    description = request.POST.get('description')
+    rating =request.POST.get('rating')
+
+    testimonial.user = user
+    testimonial.description = description
+    testimonial.rating = rating
+
+    testimonial.save()
+    return Response({"Testimonial Updated Successfully"})
+    
 
 @permission_classes([IsAuthenticated])
 @api_view(['DELETE'])
