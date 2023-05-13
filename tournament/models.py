@@ -85,7 +85,6 @@ class Registration(models.Model):
             return f"{self.team} registered for {self.tournament}"
 
 class Game(models.Model):
-    
     GAME_MODE_CHOICES = [
         ('Online', 'Online'),
         ('Physical', 'Physical'),
