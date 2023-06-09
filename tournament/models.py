@@ -137,7 +137,7 @@ class Tournament(models.Model):
 
     
 class TournamentStreams(models.Model):
-    tournament = models.ForeignKey(Tournament,on_delete=models.CASCADE)
+    tournament = models.ForeignKey(Tournament,on_delete=models.CASCADE,related_name='streams')
     stream_title = models.CharField(max_length=500)
     url = models.URLField(max_length=500)
 
@@ -145,7 +145,7 @@ class TournamentStreams(models.Model):
         return self.stream_name
     
 class TournamentSponsor(models.Model):
-    tournament = models.ForeignKey(Tournament,on_delete=models.CASCADE)
+    tournament = models.ForeignKey(Tournament,on_delete=models.CASCADE,related_name='sponsors')
     sponsor_name = models.CharField(max_length=500)
     sponsor_link = models.CharField(max_length=500,blank=True)
     sponsorship_category = models.CharField(max_length=500)
@@ -156,7 +156,7 @@ class TournamentSponsor(models.Model):
         return self.sponsor_name
 
 class TournamentFAQ(models.Model):
-    tournament = models.ForeignKey(Tournament,on_delete=models.CASCADE)
+    tournament = models.ForeignKey(Tournament,on_delete=models.CASCADE,related_name='faqs')
     value = models.CharField(max_length=100)
     heading = models.CharField(max_length=1000)
     detail = models.TextField()

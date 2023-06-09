@@ -72,13 +72,6 @@ class EventSponsorSerializer(serializers.ModelSerializer):
         model = EventSponsor
         fields = ('id', 'sponsor_name', 'sponsorship_category', 'sponsor_banner','order','event','sponsor_link')
 
-class TournamentSerializer(serializers.ModelSerializer):
-    game = GameSerializer(read_only=True)
-
-    class Meta:
-        model = Tournament
-        exclude = ['event']
-        
 
 class TournamentFAQSerializer(serializers.ModelSerializer):
     class Meta:
@@ -95,6 +88,17 @@ class TournamentSponsorSerializer(serializers.ModelSerializer):
     class Meta:
         model = TournamentSponsor
         fields = ('id', 'sponsor_name', 'sponsorship_category','order', 'sponsor_banner','sponsor_link')
+
+class TournamentSerializer(serializers.ModelSerializer):
+    game = GameSerializer(read_only=True)
+    faqs = TournamentFAQSerializer(many=True, read_only=True)
+    sponsors = TournamentSponsorSerializer(many=True, read_only=True)
+    streams = TournamentStreamsSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Tournament
+        exclude = ['event']
+
 
 class StageSerializer(serializers.ModelSerializer):
     stage_elimation_mode = EliminationModeSerializer(read_only=True)
