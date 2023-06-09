@@ -29,7 +29,7 @@ def create_team_initials(request):
 @permission_classes([IsAuthenticated])
 def create_team(request):
     user = request.user
-    if user.role == "Organization":
+    if user.role == "Organization" or user.role == "Admin":
         players = request.POST.getlist("players")
         manager = request.POST.get("manager")
         team_name = request.POST.get("team_name")
@@ -69,7 +69,7 @@ def update_team(request):
     except Team.DoesNotExist:
         return Response({"error": "Team does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-    if user.role == "Organization":
+    if user.role == "Organization" or user.role == "Admin":
         players = request.POST.getlist("players")
         manager = request.POST.get("manager",team.manager.id)
         team_name = request.POST.get("team_name",team.team_name)
@@ -155,7 +155,7 @@ def delete_team(request):
 @permission_classes([IsAuthenticated])
 def create_elimination_mode(request):
     user = request.user
-    if user.role == "Organizer":
+    if user.role == "Organizer" or user.role == "Admin":
         elimination_mode = request.POST.get('elimination_mode')
 
         mode = EliminationMode.objects.create(
@@ -186,7 +186,7 @@ def get_elimination_mode_list(request):
 def update_elimination_mode(request):
     mode_id = request.GET.get('mode_id')
     user = request.user
-    if user.role == "Organizer":
+    if user.role == "Organizer" or user.role == "Admin":
         elimination_mode = request.POST.get('elimination_mode')
 
         mode = EliminationMode.objects.get(id=mode_id)
@@ -201,7 +201,7 @@ def update_elimination_mode(request):
 def delete_elimination_mode(request):
     mode_id = request.GET.get('mode_id')
     user = request.user
-    if user.role == "Organizer":
+    if user.role == "Organizer" or user.role == "Admin":
         try:
             mode = EliminationMode.objects.get(id=mode_id)
             mode.delete()
@@ -216,7 +216,7 @@ def delete_elimination_mode(request):
 @permission_classes([IsAuthenticated])
 def create_game(request):
     user = request.user
-    if user.role == "Organizer":
+    if user.role == "Organizer" or user.role == "Admin":
 
         game_name = request.POST.get('game_name')
         game_image = request.POST.get('game_image')
@@ -261,7 +261,7 @@ def game_list(request):
 def update_game(request):
     game_id = request.GET.get('game_id')
     user = request.user
-    if user.role == "Organizer":
+    if user.role == "Organizer" or user.role == "Admin":
         game_name = request.POST.get('game_name')
         game_image = request.POST.get('game_image')
         game_type = request.POST.get('game_type', 'Mobile')
@@ -290,7 +290,7 @@ def update_game(request):
 def delete_game(request):
     game_id = request.GET.get('game_id')
     user = request.user
-    if user.role == "Organizer":
+    if user.role == "Organizer" or user.role == "Admin":
         try:
             game = Game.objects.get(id=game_id)
             game.delete()
