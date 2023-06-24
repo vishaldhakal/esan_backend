@@ -56,7 +56,7 @@ class Event(models.Model):
     event_end_date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_published = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
 
     def __str__(self) -> str:
@@ -140,7 +140,6 @@ class Tournament(models.Model):
         self.no_of_participants = self.team_registrations.count()
         self.save()
 
-
     def __str__(self) -> str:
         return self.tournament_name
 
@@ -180,13 +179,13 @@ class TeamTournamentRegistration(models.Model):
         ('Cash','Cash'),
         ('Bank Transfer','Bank Transfer'),
         ('Esewa','Esewa'),
+        ('Khalti','Khalti'),
         ('Other','Other'),
     )
 
     tournament = models.ForeignKey(Tournament,on_delete=models.CASCADE,related_name='team_registrations')
     team = models.ForeignKey(Team,on_delete=models.CASCADE)
     registration_date = models.DateTimeField(auto_now_add=True)
-    registration_fee = models.FloatField()
     registration_status = models.CharField(max_length=500,choices=REGISTRATION_STATUS_CHOICES,default="Ongoing Review")
     payment_method = models.CharField(max_length=500,choices=PAYMENT_CHOICES,default="Other")
 

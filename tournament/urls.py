@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('get-organizer-events/', views.get_organizer_events, name='get_organizer_events'),
     path('create-event/', views.create_event, name='create_event'),
     path("verify-event/",views.verify_event, name="verify_event"),
     path('update-event/', views.update_event, name='update_event'),
@@ -42,7 +43,7 @@ urlpatterns = [
     path('create-tournament/', views.create_tournament, name='create_tournament'),
     path('all-tournaments/', views.tournaments_list, name='tournaments'),
     path("verify-tournament/",views.verify_tournament, name="verify_tournament"),
-    path('get-tournament-detail/', views.tournament_details, name='tournament_details'),
+    path('get-tournament-detail/',   views.tournament_details, name='tournament_details'),
     path('tournament-detail/<str:slug>/', views.tournament_detail, name='tournament_detail'),
     path('update-tournament/', views.update_tournament, name='update_tournament'),
     path('delete-tournament/', views.delete_tournament, name='delete_tournament'),
@@ -50,6 +51,8 @@ urlpatterns = [
     path('registered-teams/', views.registered_teams, name='registered_teams'),
     path('register-team-initials/', views.register_team_initials, name='register_team_initials'),
     path('register-team/', views.register_team, name='register_team'),
+    path('verify-team/', views.verify_team, name='verify_team'),
+    path('reject-team/', views.reject_team, name='reject_team'),
     path('create-tournament-sponsor/', views.create_tournament_sponsor, name='create_tournament_sponsor'),
     path('get-tournament-sponsors/', views.get_tournament_sponsor, name='tournament_sponsor'),
     path('get-tournament-sponsors-list/', views.get_tournament_sponsor_list, name='tournament_sponsor_list'),

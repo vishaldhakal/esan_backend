@@ -2,7 +2,7 @@ from datetime import datetime
 from .models import EliminationMode, Event, EventFAQ, EventNewsFeed, EventSponsor, Stage,Team,Game, TeamTournamentRegistration, Tournament, TournamentFAQ, TournamentSponsor, TournamentStreams
 from account.models import Organizer, UserProfile,Organization
 from account.serializers import UserProfileSerializer
-from .serializers import EliminationModeSerializer, EventFAQSerializer, EventNewsFeedSerializer, EventSponsorSerializer,GameSerializer,GameSmallSerializer, StageSerializer, TeamTournamentRegistrationSerializer, TournamentFAQSerializer, TournamentSerializer, TournamentSponsorSerializer, EventSerializer, TeamSerializer,EventSmallSerializer, TournamentStreamsSerializer,TournamentSmallSerializer,EventVerifySerializer,TournamentVerifySerializer
+from .serializers import EliminationModeSerializer,TournamentSmallestSerializer, EventFAQSerializer, EventNewsFeedSerializer, EventSponsorSerializer,GameSerializer,GameSmallSerializer, StageSerializer, TeamTournamentRegistrationSerializer, TournamentFAQSerializer, TournamentSerializer, TournamentSponsorSerializer, EventSerializer, TeamSerializer,EventSmallSerializer, TournamentStreamsSerializer,TournamentSmallSerializer,EventVerifySerializer,TournamentVerifySerializer,TeamRegisterSerializer,EventDashSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -89,11 +89,22 @@ def update_event(request):
 
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_organizer_events(request):
+    user= request.user
+    orgg = Organizer.objects.get(user=user)
+    event = Event.objects.filter(organizer=orgg)
+    serializers = EventDashSerializer(event, many = True)
+    return Response({
+        "events": serializers.data
+    })   
+
+@api_view(["GET"])
 def event_list(request):
     user= request.user
     orgg = Organizer.objects.get(user=user)
     event = Event.objects.filter(organizer=orgg)
-    serializers = EventSmallSerializer(event, many = True)
+    serializers = EventVerifySerializer(event, many = True)
     return Response({
         "events": serializers.data
     })   
@@ -105,6 +116,22 @@ def verify_event(request):
     eventt.is_verified = True
     eventt.save()
     return Response({"success":"Verified Sucessfully"},status=200)
+
+@api_view(['POST'])
+def verify_team(request):
+    iddd = request.GET.get("id")
+    regs = TeamTournamentRegistration.objects.get(id=iddd)
+    regs.registration_status = "Verified"
+    regs.save()
+    return Response({"success":"Verified Sucessfully"},status=200)
+
+@api_view(['POST'])
+def reject_team(request):
+    iddd = request.GET.get("id")
+    regs = TeamTournamentRegistration.objects.get(id=iddd)
+    regs.registration_status = "Rejected"
+    regs.save()
+    return Response({"success":"Rejected Sucessfully"},status=200)
 
 
 @api_view(["GET"])
@@ -522,7 +549,7 @@ def tournaments_list(request):
     else:
         tournaments = Tournament.objects.filter(is_published=True, is_verified=True)
     
-    serializers = TournamentSerializer(tournaments, many=True)
+    serializers = TournamentSmallestSerializer(tournaments, many=True)
     return Response({
         "tournaments": serializers.data
     })
@@ -1200,7 +1227,7 @@ def open_tournament_registration(request):
     except Tournament.DoesNotExist:
         return Response({"error": "Tournament does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-    is_free = bool(request.POST.get('is_free',False)) 
+    is_free = request.POST.get('is_free',False)=="True"
     tournament.is_free = is_free
 
     if is_free: 
@@ -1248,30 +1275,34 @@ def open_tournament_registration(request):
 def register_team_initials(request):
     user = request.user
     orgg = Organization.objects.get(user=user)
-    tournament_id = request.GET.get('tournament_id')
+    slug = request.GET.get('slug')
     try:
-        tournament = Tournament.objects.get(id=tournament_id)
+        tournament = Tournament.objects.get(slug=slug)
     except (Tournament.DoesNotExist, Team.DoesNotExist):
         return Response({"error": "Invalid tournament or team"}, status=404)
 
     gam = tournament.game
+    registeredteams = TeamTournamentRegistration.objects.filter(tournament=tournament,team__organization=orgg)
+    ts = TeamTournamentRegistrationSerializer(registeredteams,many=True)
     teamss = Team.objects.filter(organization=orgg,game=gam)
-    teamss_ser = TeamSerializer(teamss,many=True)
-    return Response({"teamss": teamss_ser.data})
+    teamss_ser = TeamRegisterSerializer(teamss,many=True)
+    return Response({"teams": teamss_ser.data,"registered_teams":ts.data})
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def register_team(request):
     user = request.user
-    tournament_id = request.POST.get('tournament_id')
+    slug = request.POST.get('slug')
     team_id = request.POST.get('team_id')
-    registration_fee = request.POST.get('registration_fee')
     registration_status = request.POST.get('registration_status', 'Ongoing Review')
     payment_method = request.POST.get('payment_method', 'Other')
 
     try:
-        tournament = Tournament.objects.get(id=tournament_id)
+        tournament = Tournament.objects.get(slug=slug)
         team = Team.objects.get(id=team_id)
+        tss = TeamTournamentRegistration.objects.filter(team=team)
+        if tss:
+            return Response({"error": "This team is already registered"}, status=status.HTTP_406_NOT_ACCEPTABLE)    
     except (Tournament.DoesNotExist, Team.DoesNotExist):
         return Response({"error": "Invalid tournament or team"}, status=404)
 
@@ -1279,7 +1310,6 @@ def register_team(request):
             registration = TeamTournamentRegistration.objects.create(
                 tournament=tournament,
                 team=team,
-                registration_fee=registration_fee,
                 registration_status=registration_status,
                 payment_method=payment_method,
             )
