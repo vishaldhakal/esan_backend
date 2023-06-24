@@ -64,11 +64,10 @@ class TournamentSmallesttSerializer(serializers.ModelSerializer):
         fields = ["slug","id","tournament_name"]
 
 class EventDashSerializer(serializers.ModelSerializer):
-    organizer = OrganizerSerializer(read_only=True)
     tournaments = serializers.SerializerMethodField()
     class Meta:
         model = Event
-        fields = ('id', 'organizer', 'event_name','slug','is_verified','tournament')
+        fields = ('id', 'event_name','slug','tournaments')
     
     def get_tournaments(self, obj):
         tournaments = Tournament.objects.filter(event=obj)
