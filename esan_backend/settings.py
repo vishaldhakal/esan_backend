@@ -79,28 +79,25 @@ TEMPLATES = [
 WSGI_APPLICATION = 'esan_backend.wsgi.application' 
 
 # local django 4 sqlite
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+} """
 
 
 # productions
-""" DATABASES = {
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # Use the PostgreSQL backend
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'AVNS_vKCs9DEeQDEDjEBPB9u',  # Fill in your actual password
-        'HOST': 'esan-pg-do-user-14394508-0.b.db.ondigitalocean.com',
-        'PORT': '25060',
-        'OPTIONS': {
-            'sslmode': 'require',
-        }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'esan',
+        'USER': 'vishal',
+        'PASSWORD': 'DatabaseUserPassword',
+        'HOST': 'localhost',
+        'PORT': '',
     }
-} """
+}
 
 
 
