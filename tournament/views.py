@@ -89,7 +89,6 @@ def update_event(request):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
 def get_organizer_events(request):
     user= request.user
     orgg = Organizer.objects.get(user=user)
@@ -176,7 +175,6 @@ def delete_event(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_event_faq(request):
     slug = request.GET.get('slug')
     try:
@@ -190,7 +188,6 @@ def get_event_faq(request):
     return Response({"FAQs": faq_ser.data},status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_event_sponsor(request):
     slug = request.GET.get('slug')
     try:
@@ -204,7 +201,6 @@ def get_event_sponsor(request):
     return Response({"sponsors": sponsors_ser.data},status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_event_sponsor_detail(request):
     id = request.GET.get("id")
     sponsors = EventSponsor.objects.get(id=id)
@@ -283,7 +279,6 @@ def create_event_news_feed(request):
     return Response({"success": "Event News Feed created successfully"})
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_event_news_feed(request):
     slug = request.GET.get('slug')
 
@@ -784,7 +779,6 @@ def create_tournament(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def tournament_detail(request, slug):
     try:
         matches = []
@@ -830,7 +824,6 @@ def tournament_detail(request, slug):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def tournament_details(request):
     slug = request.GET.get("slug") 
     tournament = Tournament.objects.get(slug = slug)
@@ -925,7 +918,6 @@ def create_tournament_sponsor(request):
     return Response({"success": "TournamentSponsor created successfully"})
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_tournament_sponsor_list(request):
     tournament_sponsors = TournamentSponsor.objects.all()
     serializer = TournamentSponsorSerializer(tournament_sponsors, many=True)
@@ -933,7 +925,6 @@ def get_tournament_sponsor_list(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_tournament_sponsor(request):
     slug = request.GET.get("slug")
     tournament = Tournament.objects.get(slug=slug)
@@ -996,7 +987,6 @@ def create_tournament_prize_pool(request):
     return Response({"success": "TournamentPrize created successfully"})
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_tournament_prizes_list(request):
     tournament_prizes = TournamentPrizePool.objects.all()
     serializer = TournamentPrizePoolSerializer(tournament_prizes, many=True)
@@ -1004,7 +994,6 @@ def get_tournament_prizes_list(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_tournament_prizes(request):
     slug = request.GET.get("slug")
     tournament = Tournament.objects.get(slug=slug)
@@ -1064,7 +1053,6 @@ def create_tournament_faq(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_tournament_faq_list(request):
     tournament_faqs = TournamentFAQ.objects.all()
     serializer = TournamentFAQSerializer(tournament_faqs, many=True)
@@ -1072,7 +1060,6 @@ def get_tournament_faq_list(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_tournament_faq(request):
     slug = request.GET.get("slug")
     tournament = Tournament.objects.get(slug=slug)
@@ -1141,7 +1128,6 @@ def get_tournament_stream(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_tournament_stream_list(request):
     pk = request.GET.get('id')
     stream = TournamentStreams.objects.get(id = pk)
@@ -1188,7 +1174,6 @@ def delete_tournament_stream(request):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
 def get_stage(request):
     slug = request.GET.get("slug")
     tournament = Tournament.objects.get(slug=slug)
@@ -1548,7 +1533,6 @@ def register_solo_player(request):
         return Response({"error": "Invalid tournament or player"}, status=404)
     
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_solo_registered_players_tournament(request, slug):
     try:
         players = []
@@ -1616,7 +1600,6 @@ def change_the_team_player_status(request):
         return Response({'status':500, "message":str(e)})
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_players_acc_to_organization(request, id):
     try:
        players = []
@@ -1870,7 +1853,6 @@ def create_battle_royale_match_details(request):
 
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def get_battle_royal_matches_details(request):
     try:
         get_type = request.data['get_type']
