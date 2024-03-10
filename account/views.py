@@ -118,7 +118,7 @@ def create_user_profile(request):
         send_mail(
         'Verify Your ESAN Account',
         message,
-        'manishregmi39@gmail.com',
+        'manavkhadka0@gmail.com',
         [email],
         fail_silently=False,
     )
@@ -147,7 +147,7 @@ def create_user_profile(request):
     send_mail(
         'Thankyou for Registration',
         message,
-        'manishregmi39@gmail.com',
+        'manavkhadka0@gmail.com',
         [email],
         fail_silently=False,
     )
@@ -434,7 +434,7 @@ def checkEmail(request):
             send_mail(
         'Essan OTP Verification',
         'Here is your otp.' + str(random_float),
-        'manishregmi39@gmail.com',
+        'manavkhadka0@gmail.com',
         [request.data['email']],
         fail_silently=False,
     )
@@ -447,7 +447,7 @@ def checkEmail(request):
             send_mail(
         'Essan verification',
         'Here is your otp.' + str(random_float),
-        'manishregmi39@gmail.com',
+        'manavkhadka0@gmail.com',
         [request.data['email']],
         fail_silently=False,
     )

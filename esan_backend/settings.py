@@ -223,8 +223,8 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = 'account.UserProfile'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.elasticemail.com'
+EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'manishregmi39@gmail.com'
-EMAIL_HOST_PASSWORD = 'uoyeprhndkrbkcqv'
+EMAIL_HOST_USER = 'manavkhadka0@gmail.com'
+EMAIL_HOST_PASSWORD = '09448B43B38BB8EB3FBC0834FDFA04C5E001'

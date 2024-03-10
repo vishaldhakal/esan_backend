@@ -1566,7 +1566,7 @@ def change_the_team_player_status(request):
                 send_mail(
                     'ESSAN Rejection Message',
                     f"Hello {request.user.username},{request.data['message']}",
-                    'manishregmi39@gmail.com',
+                    'manavkhadka0@gmail.com',
                     [request.user.email],
                     fail_silently=False,
                     )
@@ -1581,7 +1581,7 @@ def change_the_team_player_status(request):
                 send_mail(
                     'ESSAN Rejection Message',
                     f"Hello {player.name},{request.data['message']}",
-                    'manishregmi39@gmail.com',
+                    'manavkhadka0@gmail.com',
                     [player.email],
                     fail_silently=False,
                     )
@@ -1901,7 +1901,7 @@ def sendEmailToBattleRoyaleTeamOrPlayers(request):
         send_mail(
                     'ESSAN Credentials: Your Room Credentials',
                     f"Your room id is: {data['room_id']} and password is: {data['password']}",
-                    'manishregmi39@gmail.com',
+                    'manavkhadka0@gmail.com',
                     receipent_lists,
                     fail_silently=False,
                     )
@@ -1928,7 +1928,7 @@ def sendAnnouncementEmailToTeams(request):
                 send_mail(
             'Announcement From Essan Gaming',
             request.data['message'],
-            'manishregmi39@gmail.com',
+            'manavkhadka0@gmail.com',
             [playerSerializerData.data['email']],
             fail_silently=False,
         )
@@ -1988,7 +1988,7 @@ def sendAnnouncementEmailToMatchTeam(request):
                 send_mail(
             'Essan Gaming: Credentials of your match room',
             f"Hello {playerSerializerData.data['username']}, \n Your room id: {roomId} \n Your password of room: {roomPassword} ",
-            'manishregmi39@gmail.com',
+            'manavkhadka0@gmail.com',
             [playerSerializerData.data['email']],
             fail_silently=False,
         )
@@ -1998,7 +1998,7 @@ def sendAnnouncementEmailToMatchTeam(request):
                 send_mail(
             'Essan Gaming: Credentials of your match room',
             f"Hello {playerSerializerData.data['username']}, \n Your room id: {roomId} \n Your password of room: {roomPassword} ",
-            'manishregmi39@gmail.com',
+            'manavkhadka0@gmail.com',
             [playerSerializerData.data['email']],
             fail_silently=False,
         )
