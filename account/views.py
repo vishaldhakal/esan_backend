@@ -124,7 +124,7 @@ def create_user_profile(request):
         user = UserProfile.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name, role='Player')
         player = Player.objects.create(user=user)   
         player.save()
-        message = f'Hello,\n\nThank you for signing up for ESAN! To get started, please click on the following link to verify your account : https://jellyfish-app-dyg5s.ondigitalocean.app/api/verify-user-profile/?user={user.id} \n\nBest regards,\nESAN'
+        message = f'Hello,\n\nThank you for signing up for ESAN! To get started, please click on the following link to verify your account : https://esan-backend.onrender.com/api/verify-user-profile/?user={user.id} \n\nBest regards,\nESAN'
 
         send_mail(
         'Verify Your ESAN Account',
