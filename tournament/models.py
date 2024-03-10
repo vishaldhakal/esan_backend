@@ -9,7 +9,7 @@ class EliminationMode(models.Model):
         ('Single Elimination','Single Elimination'),
         ('Double Elimination','Double Elimination'),
         ('Battle Royale','Battle Royale'),
-        ('Round Robbin','Round Robbin'),
+        ('Round Robin','Round Robin'),
     )
     elimination_mode = models.CharField(max_length=500,choices=STAGE_ELIMINTAION_MODES)
 
