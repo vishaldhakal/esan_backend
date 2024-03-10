@@ -18,6 +18,9 @@ from rest_framework import generics
 import random
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.http import HttpResponseBadRequest
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class CustomAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
@@ -70,14 +73,22 @@ class ChangePasswordView(generics.UpdateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['GET'])
 def verify_user_profile(request):
-    userid = request.GET.get("user")
-    userpr = UserProfile.objects.get(id=userid)
-    userpr.is_verified = True
-    userpr.save()
-    redirect_uri = 'http://localhost:8081'
-    return redirect(reverse(redirect_uri))
+    try:
+        userid = request.GET.get("user")
+        userpr = UserProfile.objects.get(id=userid)
+        userpr.is_verified = True
+        userpr.save()
+        
+        # Define the URL to redirect to
+        redirect_uri = 'https://example.com/verified'  # Replace with your desired URL
+        
+        # Redirect to the defined URL
+        return redirect(redirect_uri)
+    
+    except ObjectDoesNotExist:
+        return HttpResponseBadRequest("User profile does not exist")
  
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
